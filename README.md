@@ -1,5 +1,8 @@
 Following are the instructions 
-
+Download this dependency before setting up
+Install git
+Install node,npm
+Install Codeeditor
 
 **SetUp**
 Step 1 : Clone project 
