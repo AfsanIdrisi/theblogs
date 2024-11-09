@@ -1,101 +1,79 @@
+"use client"
 import Image from "next/image";
-
+import blog1 from '../public/blog1.jpg'
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Head from "next/head";
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  let [blogs,setBlogs]=useState([])
+  useEffect(()=>{
+    async function  fetchData(){
+      let response= await fetch("http://localhost:5000/")
+      let data=await response.json()
+      if(response.ok){
+        setBlogs(data);
+      }
+      else{
+        console.log("error")
+      }
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    }
+
+
+    // let id=1
+    
+    fetchData();
+    // console.log("afs")
+  },[])
+
+  
+  return (
+    <>
+    <Head>
+      <title>Afsan</title>
+    </Head>
+    <main className="flex flex-col">
+      <div className="bg-black text-white w-full flex justify-center h-screen items-center">
+        <div className="flex justify-center max-w-[900px] ">
+          <h1 className="text-center text-[150px] max-[570px]:text-[100px]">THE BLOGS</h1>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
+      </div>
+
+<div className="flex justify-center my-10 items-center ">
+      <div className="blogContainer grid grid-cols-4 gap-5 p-6 w-full  max-w-[1200px] flex-wrap max-[1200px]:grid-cols-3 max-[900px]:grid-cols-2 max-[680px]:grid-cols-1 max-[1200px] items-center max-[650px]:px-12 max-[430px]:px-6 gap-y-10" >
+      {/* <div className="blogContainer flex justify-center gap-5 w-full max-w-[1200px] flex-wrap max-[1200px]:flex-col max-[1200px] items-center max-[650px]:px-12 max-[430px]:px-6 gap-y-10" > */}
+        {blogs.map((blog,i)=>{
+
+          if(blog.status=="publish"){
+            const blob = new Blob([new Uint8Array(blog.image.data)], { type: 'image/jpeg' });
+          let src=URL.createObjectURL(blob);
+            return <a href={`/blog?id=${blog.id}`}  key={i} className="blogpost bg-white w-full  h-full max-[1200px]:w-full  rounded-lg text-black p-4 max-[650px]:w-full">
+          <div className="w-full">
+         <Image
+          src={src}
+          alt="website Development"
+          className=" rounded-lg w-full h-full" 
+          width={20}
+          height={200}
+        /> 
+          </div>
+          <div>
+            <p className="text-[0.9rem]">{blog.Date}</p>
+            <h2 className="text-[1rem] font-bold">{blog.Title}</h2>
+            <p className="text-[0.9rem] mt-4">{blog.Description.slice(0,100)+"..."}</p>
+          </div>
+          
         </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          }
+        })}
+          
+    
+
+        <a href="http://localhost:3000/admin" className="bg-white text-black fixed bottom-10 right-10 px-6 py-2 rounded-full font-bold">Admin</a>
+        
+      </div>
+</div>
+    </main>
+    </>
   );
 }

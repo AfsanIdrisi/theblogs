@@ -7,6 +7,12 @@
   --foreground: #171717;
 }
 
+
+
+/* Optional: If you want to hide the scrollbar but still allow scrolling */
+*::-webkit-scrollbar {
+  display: none;
+}
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -18,4 +24,13 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.transformCustom{
+ transform: translate(-50%,-50%);
+}
+
+.addBtn{
+  column-span: 2;
 }
